@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Portal público del Sistema Integral de Gestión Territorial del IDRD.">
+  <title>SIGT-IDRD | Portal público</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/idrd-visual.css">
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<header class="site-header"><div class="brand"><img class="brand-mark" style="width:52px;height:52px;padding:0;object-fit:cover;background:transparent;border-radius:12px" src="assets/branding/sigt_idrd_app_icon_1024.png" alt="Identidad visual SIGT-IDRD"><div><p>Instituto Distrital de Recreación y Deporte</p><strong>SIGT-IDRD</strong></div></div><span class="public-badge">Portal de datos públicos</span></header>
+<main id="contenido">
+  <section class="hero"><div><p class="eyebrow">Gestión territorial · Bogotá</p><h1>Parques, actividad y cuidado del territorio</h1><p>Información pública consolidada para conocer la presencia institucional y las acciones de mantenimiento registradas en los parques de la ciudad.</p></div><div class="hero-seal" aria-hidden="true"><img style="width:118px;height:118px;object-fit:cover;border-radius:26px;opacity:.94" src="assets/branding/sigt_idrd_app_icon_1024.png" alt=""></div></section>
+  <nav class="section-nav" aria-label="Secciones" role="tablist">
+    <button id="tab-resumen" class="nav-tab active" role="tab" aria-selected="true" aria-controls="resumen" data-section="resumen">Resumen</button>
+    <button id="tab-novedades" class="nav-tab" role="tab" aria-selected="false" aria-controls="novedades" data-section="novedades">Mantenimiento</button>
+    <button id="tab-actividades" class="nav-tab" role="tab" aria-selected="false" aria-controls="actividades" data-section="actividades">Actividades</button>
+  </nav>
+
+  <section id="resumen" class="page-section" role="tabpanel" aria-labelledby="tab-resumen">
+    <div class="section-intro"><div><p class="eyebrow">Panorama general</p><h2>Resumen SIGT-IDRD</h2></div><p>Indicadores consolidados de la información pública disponible.</p></div>
+    <div class="kpi-grid four">
+      <article class="kpi-card orange"><span>Acciones de mantenimiento</span><strong id="summary-reportes">—</strong><small>Acciones registradas en parques</small></article>
+      <article class="kpi-card green"><span>Actividades</span><strong id="summary-actividades">—</strong><small>Acciones en territorio</small></article>
+      <article class="kpi-card blue"><span>Asistentes</span><strong id="summary-asistentes">—</strong><small>Participación reportada</small></article>
+      <article class="kpi-card lime"><span>Parques</span><strong id="summary-parques">—</strong><small>Con registros públicos</small></article>
+    </div>
+    <aside class="privacy-note"><strong>Lectura responsable</strong><p>No se publican correos, descripciones, fotografías ni coordenadas exactas.</p></aside>
+  </section>
+
+  <section id="novedades" class="page-section" role="tabpanel" aria-labelledby="tab-novedades" hidden>
+    <div class="section-intro"><div><p class="eyebrow">Cuidado del territorio</p><h2>Acciones de Mantenimiento en Parques</h2></div><p>Consulta las categorías y los tipos de novedad asociados a las acciones registradas.</p></div>
+    <form id="report-filters" class="filter-panel">
+      <label>Fecha<input name="fecha" type="date"></label><label>Localidad<select name="localidad"><option value="">Todas</option></select></label><label>UPL<select name="upl"><option value="">Todas</option></select></label><label>Categoría<select name="categoria"><option value="">Todas</option></select></label><label>Tipo de novedad<select name="tipoNovedad"><option value="">Todas</option></select></label>
+      <div class="filter-actions"><button type="submit">Aplicar filtros</button><button class="secondary" type="reset">Limpiar</button></div>
+    </form>
+    <p id="report-scope" class="scope-note">Totales generales.</p>
+    <div class="kpi-grid two compact"><article class="kpi-card orange"><span>Acciones de Mantenimiento en Parques</span><strong id="reports-total">—</strong><small>Acciones en la vista</small></article><article class="kpi-card lime"><span>Parques</span><strong id="reports-parks">—</strong><small>Parques con acciones</small></article></div>
+    <div class="analytics-layout">
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Territorio</p><h3>Mapa de mantenimiento</h3></div><span>Sin coordenadas exactas</span></div><div id="reports-map" class="map"></div><p class="map-note">Cada círculo representa el centro aproximado de la extensión pública del parque; su tamaño aumenta según el total de acciones.</p></article>
+      <div class="chart-column"><article class="panel"><h3>Por categoría</h3><div id="reports-category-chart" class="chart"></div></article><article class="panel"><h3>Por tipo de novedad</h3><div id="reports-type-chart" class="chart"></div></article></div>
+    </div>
+  </section>
+
+  <section id="actividades" class="page-section" role="tabpanel" aria-labelledby="tab-actividades" hidden>
+    <div class="section-intro"><div><p class="eyebrow">Presencia institucional</p><h2>Actividades en territorio</h2></div><p>Explora la oferta y participación registrada.</p></div>
+    <form id="activity-filters" class="filter-panel activities-filters">
+      <label>Fecha<input name="fecha" type="date"></label><label>Localidad<select name="localidad"><option value="">Todas</option></select></label><label>UPL<select name="upl"><option value="">Todas</option></select></label><label>Tipo de actividad<select name="tipoActividad"><option value="">Todas</option></select></label><label>Programa<select name="programa"><option value="">Todas</option></select></label><label>Línea<select name="linea"><option value="">Todas</option></select></label>
+      <div class="filter-actions"><button type="submit">Aplicar filtros</button><button class="secondary" type="reset">Limpiar</button></div>
+    </form>
+    <p id="activity-scope" class="scope-note">Totales generales.</p>
+    <div class="kpi-grid three compact"><article class="kpi-card green"><span>Actividades</span><strong id="activities-total">—</strong><small>Actividades en la vista</small></article><article class="kpi-card blue"><span>Asistentes</span><strong id="activities-attendees">—</strong><small>Participación reportada</small></article><article class="kpi-card lime"><span>Parques</span><strong id="activities-parks">—</strong><small>Parques con actividades</small></article></div>
+    <div class="analytics-layout">
+      <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Territorio</p><h3>Mapa de actividades</h3></div><span>Sin coordenadas exactas</span></div><div id="activities-map" class="map"></div><p class="map-note">Los círculos representan centros aproximados de extensiones oficiales de parques; no se muestran coordenadas exactas.</p></article>
+      <div class="chart-column three-charts"><article class="panel"><h3>Por programa</h3><div id="activities-program-chart" class="chart"></div></article><article class="panel"><h3>Por tipo de actividad</h3><div id="activities-type-chart" class="chart"></div></article><article class="panel"><h3>Por línea</h3><div id="activities-line-chart" class="chart"></div></article></div>
+    </div>
+  </section>
+  <p id="status" class="status" role="status" aria-live="polite">Preparando portal…</p>
+</main>
+<footer><strong>SIGT-IDRD</strong><p>Instituto Distrital de Recreación y Deporte · Bogotá</p></footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script><script src="js/config.js"></script><script src="js/api.js"></script><script src="js/app.js"></script>
+</body></html>
