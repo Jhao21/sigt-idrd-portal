@@ -4,6 +4,7 @@
   const ACTIONS = Object.freeze({
     reportesSummary: 'v1.reportes.summary',
     reportesList: 'v1.reportes.list',
+    reportesPorParque: 'v1.reportes.porParque',
     actividadesSummary: 'v1.actividades.summary',
     actividadesList: 'v1.actividades.list',
     actividadesPorParque: 'v1.actividades.porParque'
@@ -47,6 +48,7 @@
   global.SIGT_API = Object.freeze({
     obtenerResumenReportes: function (filtros) { return consultar(ACTIONS.reportesSummary, filtros); },
     listarReportes: function (filtros) { return consultar(ACTIONS.reportesList, filtros); },
+    obtenerReportesPorParque: function (filtros) { return consultar(ACTIONS.reportesPorParque, filtros); },
     obtenerResumenActividades: function (filtros) { return consultar(ACTIONS.actividadesSummary, filtros); },
     listarActividades: function (filtros) { return consultar(ACTIONS.actividadesList, filtros); },
     obtenerActividadesPorParque: function (filtros) { return consultar(ACTIONS.actividadesPorParque, filtros); }

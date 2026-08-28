@@ -15,6 +15,7 @@
     <button id="tab-resumen" class="nav-tab active" role="tab" aria-selected="true" aria-controls="resumen" data-section="resumen">Resumen</button>
     <button id="tab-novedades" class="nav-tab" role="tab" aria-selected="false" aria-controls="novedades" data-section="novedades">Mantenimiento</button>
     <button id="tab-actividades" class="nav-tab" role="tab" aria-selected="false" aria-controls="actividades" data-section="actividades">Actividades</button>
+    <button id="tab-reporte-parque" class="nav-tab" role="tab" aria-selected="false" aria-controls="reporte-parque" data-section="reporte-parque">Reporte Parque</button>
   </nav>
 
   <section id="resumen" class="page-section" role="tabpanel" aria-labelledby="tab-resumen">
@@ -53,6 +54,37 @@
     <div class="analytics-layout">
       <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Territorio</p><h3>Mapa de actividades</h3></div><span>Sin coordenadas exactas</span></div><div id="activities-map" class="map"></div><p class="map-note">Los círculos representan centros aproximados de extensiones oficiales de parques; no se muestran coordenadas exactas.</p></article>
       <div class="chart-column three-charts"><article class="panel"><h3>Por programa</h3><div id="activities-program-chart" class="chart"></div></article><article class="panel"><h3>Por tipo de actividad</h3><div id="activities-type-chart" class="chart"></div></article><article class="panel"><h3>Por línea</h3><div id="activities-line-chart" class="chart"></div></article></div>
+    </div>
+  </section>
+
+  <section id="reporte-parque" class="page-section" role="tabpanel" aria-labelledby="tab-reporte-parque" hidden>
+    <div class="section-intro"><div><p class="eyebrow">Ficha integral</p><h2>Reporte Parque</h2></div><p>Consulta información pública consolidada de mantenimiento y actividades por parque.</p></div>
+    <form id="park-report-form" class="park-selector panel">
+      <label for="park-report-select">Seleccionar parque</label>
+      <select id="park-report-select" name="idParque"><option value="">Seleccione un parque</option></select>
+    </form>
+    <div id="park-report-empty" class="park-empty panel">Seleccione un parque para consultar su reporte integral.</div>
+    <div id="park-report-content" hidden>
+      <article class="park-identity panel">
+        <div><p class="eyebrow">Parque seleccionado</p><h3 id="park-report-name">—</h3><p>Código: <strong id="park-report-code">—</strong></p></div>
+        <dl><div><dt>Localidad</dt><dd id="park-report-locality">—</dd></div><div><dt>UPL</dt><dd id="park-report-upl">—</dd></div></dl>
+      </article>
+      <div class="kpi-grid four compact">
+        <article class="kpi-card orange"><span>Acciones de mantenimiento</span><strong id="park-report-maintenance">—</strong><small>Total consolidado</small></article>
+        <article class="kpi-card green"><span>Actividades</span><strong id="park-report-activities">—</strong><small>Total consolidado</small></article>
+        <article class="kpi-card blue"><span>Participantes</span><strong id="park-report-attendees">—</strong><small>Participación reportada</small></article>
+        <article class="kpi-card lime"><span>Evidencias públicas</span><strong class="coming-soon">Próximamente</strong><small>Solo evidencias aprobadas</small></article>
+      </div>
+      <div class="park-report-block">
+        <div class="section-intro compact-intro"><div><p class="eyebrow">Mantenimiento</p><h3>Acciones registradas</h3></div><p>Agregados completos y detalle público reciente.</p></div>
+        <div class="park-chart-grid"><article class="panel"><h3>Por categoría</h3><div id="park-report-category-chart" class="chart"></div></article><article class="panel"><h3>Por elemento o dotación</h3><div id="park-report-element-chart" class="chart"></div></article><article class="panel"><h3>Por tipo de novedad</h3><div id="park-report-novelty-chart" class="chart"></div></article></div>
+      </div>
+      <div class="park-report-block">
+        <div class="section-intro compact-intro"><div><p class="eyebrow">Actividades</p><h3>Presencia institucional</h3></div><p>Totales completos y detalle público reciente.</p></div>
+        <div class="park-chart-grid"><article class="panel"><h3>Por tipo de actividad</h3><div id="park-report-activity-type-chart" class="chart"></div></article><article class="panel"><h3>Por programa</h3><div id="park-report-program-chart" class="chart"></div></article><article class="panel"><h3>Por línea</h3><div id="park-report-line-chart" class="chart"></div></article></div>
+      </div>
+      <div class="park-detail-grid"><article class="panel park-detail"><h3>Acciones recientes</h3><div id="park-report-maintenance-detail" class="table-wrap"></div></article><article class="panel park-detail"><h3>Actividades recientes</h3><div id="park-report-activity-detail" class="table-wrap"></div></article></div>
+      <aside class="privacy-note"><strong>Información pública</strong><p>Esta ficha no publica coordenadas exactas, ubicaciones libres, fotografías no aprobadas ni identificadores de Drive.</p></aside>
     </div>
   </section>
   <p id="status" class="status" role="status" aria-live="polite">Preparando portal…</p>

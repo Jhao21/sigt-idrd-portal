@@ -81,3 +81,47 @@ h1, h2, h3, .hero h1, .section-intro h2, .kpi-card strong {
 
 footer { border-top: 1px solid var(--line); }
 footer strong { color: var(--red-idrd); }
+
+.park-selector { display: grid; grid-template-columns: minmax(180px, 260px) minmax(260px, 620px); align-items: center; gap: 16px; margin-bottom: 18px; }
+.park-selector label { font-weight: 700; color: #444444; }
+.park-selector select { min-height: 46px; padding: 0 38px 0 12px; color: #444444; background: #ffffff; border: 1px solid #cfd5dc; border-radius: 7px; font: inherit; }
+.park-empty { padding: 32px; color: var(--muted); text-align: center; }
+.park-identity { display: flex; justify-content: space-between; align-items: center; gap: 28px; margin-bottom: 18px; }
+.park-identity h3 { margin: 6px 0; font-size: clamp(1.5rem, 3vw, 2.25rem); }
+.park-identity p { margin: 0; }
+.park-identity dl { display: grid; grid-template-columns: repeat(2, minmax(150px, 1fr)); gap: 12px; min-width: min(100%, 390px); margin: 0; }
+.park-identity dl div { padding: 13px 15px; background: var(--paper); border-radius: 7px; }
+.park-identity dt { color: var(--muted); font-size: .76rem; font-weight: 700; }
+.park-identity dd { margin: 5px 0 0; color: #333333; font-weight: 700; }
+.coming-soon { font-size: clamp(1.25rem, 2.4vw, 1.8rem) !important; }
+#reporte-parque .kpi-card { min-height: 118px; padding: 16px; }
+#reporte-parque .kpi-card strong { font-size: clamp(1.65rem, 2.5vw, 2.35rem); }
+.park-report-block { margin-top: 24px; }
+.compact-intro { margin-bottom: 10px; }
+.compact-intro h3 { margin: 5px 0 0; font-size: 1.55rem; }
+#reporte-parque .compact-intro h3 { font-size: 1.25rem; }
+#reporte-parque .park-chart-grid { display: flex; gap: 14px; flex-wrap: nowrap; align-items: stretch; }
+#reporte-parque .park-chart-grid > .panel { flex: 1 1 0; min-width: 0; }
+.park-chart-grid .panel { min-height: 220px; padding: 16px; display: flex; flex-direction: column; }
+.park-chart-grid .panel h3 { margin: 0 0 2px; min-height: 36px; }
+#reporte-parque .park-chart-grid .panel h3 { font-size: 15px; }
+.park-chart-grid .chart { height: 175px; flex: 1; }
+#reporte-parque .park-detail-grid { display: flex; gap: 14px; flex-wrap: nowrap; margin-top: 24px; align-items: stretch; }
+#reporte-parque .park-detail-grid > .panel { flex: 1 1 0; min-width: 0; }
+.park-detail { min-width: 0; height: 100%; padding: 16px; }
+.park-detail h3 { margin-top: 0; }
+.table-wrap { overflow-x: auto; }
+.public-table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+#reporte-parque .public-table { font-size: 11px; }
+.public-table th, .public-table td { padding: 11px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+#reporte-parque .public-table th, #reporte-parque .public-table td { padding: 8px 9px; }
+#reporte-parque .public-table th { font-size: 11px; font-weight: 600; }
+.public-table th { color: #444444; background: #f5f6f8; white-space: nowrap; }
+.public-table td { color: #555555; }
+.table-empty { margin: 16px 0 4px; color: var(--muted); }
+.evidence-coming { min-height: 34px; padding: 0 12px; color: #70757d; background: #eef0f3; border: 1px solid #d7dbe1; border-radius: 6px; font: inherit; font-size: .78rem; font-weight: 700; cursor: not-allowed; }
+#reporte-parque .evidence-coming { font-size: 11px; }
+
+@media(max-width:720px){.park-selector{grid-template-columns:1fr}.park-identity{display:block}.park-identity dl{margin-top:18px}.section-nav{overflow-x:auto}.nav-tab{min-width:max-content}.park-report-block,.park-detail-grid{margin-top:18px}}
+@media(max-width:600px){#reporte-parque .park-chart-grid,#reporte-parque .park-detail-grid{flex-direction:column}}
+@media(max-width:460px){.park-identity dl{grid-template-columns:1fr}}
