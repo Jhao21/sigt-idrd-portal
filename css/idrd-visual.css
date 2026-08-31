@@ -121,6 +121,8 @@ footer strong { color: var(--red-idrd); }
 .table-empty { margin: 16px 0 4px; color: var(--muted); }
 .evidence-coming { min-height: 34px; padding: 0 12px; color: #70757d; background: #eef0f3; border: 1px solid #d7dbe1; border-radius: 6px; font: inherit; font-size: .78rem; font-weight: 700; cursor: not-allowed; }
 #reporte-parque .evidence-coming { font-size: 11px; }
+.evidence-view { min-height: 34px; padding: 0 12px; color: #ffffff; background: var(--blue); border: 1px solid var(--blue); border-radius: 6px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
+.evidence-view:hover { background: var(--dark); border-color: var(--dark); }
 
 @media(max-width:720px){.park-selector{grid-template-columns:1fr}.park-identity{display:block}.park-identity dl{margin-top:18px}.section-nav{overflow-x:auto}.nav-tab{min-width:max-content}.park-report-block,.park-detail-grid{margin-top:18px}}
 @media(max-width:600px){#reporte-parque .park-chart-grid,#reporte-parque .park-detail-grid{flex-direction:column}}

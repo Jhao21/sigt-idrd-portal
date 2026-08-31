@@ -308,16 +308,59 @@
     });
     select.appendChild(fragmento);
   }
-  function tablaPublica(cabeceras, filas) {
+  function tablaPublica(cabeceras, filas, evidencias) {
     if (!filas.length) return '<p class="table-empty">No hay registros públicos recientes disponibles.</p>';
     return '<table class="public-table"><thead><tr>' + cabeceras.map(function (cabecera) { return '<th scope="col">' + escaparHtml(cabecera.nombre) + '</th>'; }).join('') + '</tr></thead><tbody>' + filas.map(function (fila) {
       return '<tr>' + cabeceras.map(function (cabecera) {
-        const contenido = cabecera.evidencia
-          ? '<button class="evidence-coming" type="button" disabled>Próximamente</button>'
-          : escaparHtml(fila[cabecera.campo] || 'Sin dato');
+        let contenido;
+        if (cabecera.evidencia) {
+          const idOrigen = String(fila[cabecera.campoOrigen] || '').trim();
+          const evidencia = evidencias && evidencias.get(idOrigen);
+          contenido = evidencia && evidencia.tieneEvidenciaPublica
+            ? '<button class="evidence-view" type="button" data-id-origen="' + escaparHtml(idOrigen) + '">Ver evidencia</button>'
+            : '<button class="evidence-coming" type="button" disabled>Próximamente</button>';
+        } else {
+          contenido = escaparHtml(fila[cabecera.campo] || 'Sin dato');
+        }
         return '<td>' + contenido + '</td>';
       }).join('') + '</tr>';
     }).join('') + '</tbody></table>';
+  }
+  async function consultarEvidenciasVisiblesReportes(filas) {
+    const ids = Array.from(new Set((filas || []).map(function (fila) {
+      return String(fila.ID_Reporte || '').trim();
+    }).filter(Boolean)));
+    if (!ids.length) return new Map();
+    try {
+      const respuesta = await global.SIGT_API.consultarEvidenciasReportes(ids);
+      const solicitados = new Set(ids);
+      const evidencias = new Map();
+      (respuesta || []).forEach(function (item) {
+        const idOrigen = String(item && item.idOrigen || '').trim();
+        const clavePublica = String(item && item.clavePublica || '').trim();
+        if (solicitados.has(idOrigen) && item.tieneEvidenciaPublica === true && /^[A-Za-z0-9_-]{43}$/.test(clavePublica)) {
+          evidencias.set(idOrigen, { tieneEvidenciaPublica: true, clavePublica: clavePublica });
+        }
+      });
+      return evidencias;
+    } catch (error) {
+      return new Map();
+    }
+  }
+  function activarBotonesEvidencia(contenedor, evidencias) {
+    contenedor.querySelectorAll('.evidence-view[data-id-origen]').forEach(function (boton) {
+      boton.addEventListener('click', function () {
+        const evidencia = evidencias.get(String(boton.dataset.idOrigen || '').trim());
+        if (!evidencia || evidencia.tieneEvidenciaPublica !== true) return;
+        try {
+          const url = global.SIGT_API.construirUrlContenidoEvidencia(evidencia.clavePublica);
+          const ventana = global.open(url, '_blank', 'noopener,noreferrer');
+          if (ventana) ventana.opener = null;
+        } catch (error) {
+          return;
+        }
+      });
+    });
   }
   function actualizarUrlFichaParque(idParque) {
     const url = new URL(global.location.href);
@@ -349,6 +392,8 @@
       const actividad = (datos[1].items || []).find(function (item) { return String(item.idParque) === codigo; }) || null;
       const reportesRecientes = (datos[2].items || []).slice(0, 10);
       const actividadesRecientes = (datos[3].items || []).slice(0, 10);
+      const evidenciasReportes = await consultarEvidenciasVisiblesReportes(reportesRecientes);
+      if (numeroSolicitud !== solicitudReporteParque) return;
       const territorio = datos[4] || territorioVacio();
       const opcion = Array.from(document.getElementById('park-report-select').options).find(function (item) { return item.value === codigo; });
       const nombreOpcion = opcion ? opcion.textContent.replace(codigo + ' · ', '') : '';
@@ -369,11 +414,13 @@
       dona(graficos.fichaPrograma, agrupar(actividadesRecientes, 'Programa'));
       dona(graficos.fichaLinea, agrupar(actividadesRecientes, 'Linea'));
 
-      document.getElementById('park-report-maintenance-detail').innerHTML = tablaPublica([
+      const contenedorMantenimiento = document.getElementById('park-report-maintenance-detail');
+      contenedorMantenimiento.innerHTML = tablaPublica([
         { nombre: 'Fecha', campo: 'Fecha' }, { nombre: 'Categoría', campo: 'Categoria' },
         { nombre: 'Elemento / dotación', campo: 'Elemento' }, { nombre: 'Tipo de novedad', campo: 'Tipo_Novedad' },
-        { nombre: 'Evidencia', evidencia: true }
-      ], reportesRecientes);
+        { nombre: 'Evidencia', evidencia: true, campoOrigen: 'ID_Reporte' }
+      ], reportesRecientes, evidenciasReportes);
+      activarBotonesEvidencia(contenedorMantenimiento, evidenciasReportes);
       document.getElementById('park-report-activity-detail').innerHTML = tablaPublica([
         { nombre: 'Fecha', campo: 'Fecha' }, { nombre: 'Tipo de actividad', campo: 'Tipo_Actividad' },
         { nombre: 'Programa', campo: 'Programa' }, { nombre: 'Línea', campo: 'Linea' },
