@@ -392,6 +392,7 @@
   function mostrarFichaVacia() {
     document.getElementById('park-report-empty').hidden = false;
     document.getElementById('park-report-content').hidden = true;
+    kpi('park-report-evidence', 0);
   }
   async function cargarReporteParque(idParque) {
     const codigo = String(idParque || '').trim();
@@ -417,6 +418,7 @@
       if (numeroSolicitud !== solicitudReporteParque) return;
       const evidenciasActividades = await consultarEvidenciasVisiblesActividades(actividadesRecientes);
       if (numeroSolicitud !== solicitudReporteParque) return;
+      kpi('park-report-evidence', evidenciasReportes.size + evidenciasActividades.size);
       const territorio = datos[4] || territorioVacio();
       const opcion = Array.from(document.getElementById('park-report-select').options).find(function (item) { return item.value === codigo; });
       const nombreOpcion = opcion ? opcion.textContent.replace(codigo + ' · ', '') : '';
