@@ -101,6 +101,16 @@
         idsOrigen: ids.join(',')
       });
     },
+    consultarEvidenciasActividades: function (idsOrigen) {
+      const ids = Array.from(new Set((idsOrigen || []).map(function (id) {
+        return String(id || '').trim();
+      }).filter(Boolean))).slice(0, 100);
+      if (!ids.length) return Promise.resolve([]);
+      return consultarMedios(MEDIA_ACTIONS.evidenciasLookup, {
+        tipoOrigen: 'ACTIVIDAD',
+        idsOrigen: ids.join(',')
+      });
+    },
     construirUrlContenidoEvidencia: function (clavePublica) {
       const clave = String(clavePublica || '').trim();
       if (!/^[A-Za-z0-9_-]{43}$/.test(clave)) {

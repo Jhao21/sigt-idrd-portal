@@ -347,6 +347,27 @@
       return new Map();
     }
   }
+  async function consultarEvidenciasVisiblesActividades(filas) {
+    const ids = Array.from(new Set((filas || []).map(function (fila) {
+      return String(fila.ID_Actividad || '').trim();
+    }).filter(Boolean)));
+    if (!ids.length) return new Map();
+    try {
+      const respuesta = await global.SIGT_API.consultarEvidenciasActividades(ids);
+      const solicitados = new Set(ids);
+      const evidencias = new Map();
+      (respuesta || []).forEach(function (item) {
+        const idOrigen = String(item && item.idOrigen || '').trim();
+        const clavePublica = String(item && item.clavePublica || '').trim();
+        if (solicitados.has(idOrigen) && item.tieneEvidenciaPublica === true && /^[A-Za-z0-9_-]{43}$/.test(clavePublica)) {
+          evidencias.set(idOrigen, { tieneEvidenciaPublica: true, clavePublica: clavePublica });
+        }
+      });
+      return evidencias;
+    } catch (error) {
+      return new Map();
+    }
+  }
   function activarBotonesEvidencia(contenedor, evidencias) {
     contenedor.querySelectorAll('.evidence-view[data-id-origen]').forEach(function (boton) {
       boton.addEventListener('click', function () {
@@ -394,6 +415,8 @@
       const actividadesRecientes = (datos[3].items || []).slice(0, 10);
       const evidenciasReportes = await consultarEvidenciasVisiblesReportes(reportesRecientes);
       if (numeroSolicitud !== solicitudReporteParque) return;
+      const evidenciasActividades = await consultarEvidenciasVisiblesActividades(actividadesRecientes);
+      if (numeroSolicitud !== solicitudReporteParque) return;
       const territorio = datos[4] || territorioVacio();
       const opcion = Array.from(document.getElementById('park-report-select').options).find(function (item) { return item.value === codigo; });
       const nombreOpcion = opcion ? opcion.textContent.replace(codigo + ' · ', '') : '';
@@ -421,11 +444,14 @@
         { nombre: 'Evidencia', evidencia: true, campoOrigen: 'ID_Reporte' }
       ], reportesRecientes, evidenciasReportes);
       activarBotonesEvidencia(contenedorMantenimiento, evidenciasReportes);
-      document.getElementById('park-report-activity-detail').innerHTML = tablaPublica([
+      const contenedorActividades = document.getElementById('park-report-activity-detail');
+      contenedorActividades.innerHTML = tablaPublica([
         { nombre: 'Fecha', campo: 'Fecha' }, { nombre: 'Tipo de actividad', campo: 'Tipo_Actividad' },
         { nombre: 'Programa', campo: 'Programa' }, { nombre: 'Línea', campo: 'Linea' },
-        { nombre: 'Participantes', campo: 'Asistentes' }, { nombre: 'Evidencia', evidencia: true }
-      ], actividadesRecientes);
+        { nombre: 'Participantes', campo: 'Asistentes' },
+        { nombre: 'Evidencia', evidencia: true, campoOrigen: 'ID_Actividad' }
+      ], actividadesRecientes, evidenciasActividades);
+      activarBotonesEvidencia(contenedorActividades, evidenciasActividades);
       Object.values(graficos).forEach(function (grafico) { grafico.resize(); });
       estado('Reporte Parque actualizado.');
     } catch (error) {
