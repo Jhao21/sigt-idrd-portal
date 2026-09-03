@@ -295,7 +295,16 @@
       });
     });
     return Array.from(parques, function (entrada) { return { idParque: entrada[0], nombreParque: entrada[1] }; })
-      .sort(function (a, b) { return (a.nombreParque || a.idParque).localeCompare(b.nombreParque || b.idParque, 'es', { sensitivity: 'base' }); });
+      .sort(function (a, b) {
+        const partesA = String(a.idParque || '').split('-');
+        const partesB = String(b.idParque || '').split('-');
+        const localidadA = Number(partesA[0]);
+        const localidadB = Number(partesB[0]);
+        const parqueA = Number(partesA[1]);
+        const parqueB = Number(partesB[1]);
+        return localidadA - localidadB || parqueA - parqueB ||
+          String(a.idParque || '').localeCompare(String(b.idParque || ''));
+      });
   }
   function poblarParquesFicha() {
     const select = document.getElementById('park-report-select');
